@@ -1,0 +1,212 @@
+/* musiclist style*/
+
+.myplayer{
+    margin:100px auto;
+    border:1px solid #dddddd;
+    width:650px;
+}
+
+#t_wrapper{
+    position:relative;
+    width:600px;
+    margin:0px auto;
+    height:30px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+#playlist{
+    display:block;
+    background:url("http://ozec80sj2.bkt.clouddn.com/table3.png");
+    color:#ffffff;
+    width:550px;
+    margin:0px auto;
+}
+#playlist ul{
+    padding-right: 40px;
+}
+
+#playlist li{
+    display:flex;
+    flex-direction: row;
+    flex-wrap:nowrap;
+    justify-content:space-between;
+    align-items:center;
+    height:35px;
+    padding-left:7px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    white-space: nowrap;
+    flex-grow: 1;
+}
+
+#playlist li:hover{
+    background:rgba(255,255,255,0.3);
+}
+
+#playlist a{
+    display:block;
+    width:100%;
+    height:100%;
+    color:#fff;
+    text-decoration:none;
+    line-height:40px;
+    font-weight:300;
+    text-overflow: ellipsis;
+}
+
+/* savelist style*/
+#savelist{
+    display:none;
+    background:url("http://ozec80sj2.bkt.clouddn.com/table3.png");
+    color:#ffffff;
+    width:550px;
+    margin:0px auto;
+}
+#savelist ul{
+    padding-right: 40px;
+}
+
+#savelist li{
+    display:flex;
+    flex-direction: row;
+    flex-wrap:nowrap;
+    justify-content:space-between;
+    align-items:center;
+    height:35px;
+    padding-left:7px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    white-space: nowrap;
+    flex-grow: 1;
+}
+
+#savelist li:hover{
+    background:rgba(255,255,255,0.3);
+}
+
+#savelist a{
+    display:block;
+    width:100%;
+    height:100%;
+    color:#fff;
+    text-decoration:none;
+    line-height:40px;
+    font-weight:300;
+    text-overflow: ellipsis;
+}
+/* 列表标题 style*/
+.container{
+    width: 100%;
+    position:relative;
+    text-align: center;
+}
+
+.a_demo_four {
+    background-color:#d06280;
+    font-family: 'Open Sans', sans-serif;
+    font-size:12px;
+    text-decoration:none;
+    color:#fff;
+    position: relative;
+    padding:10px 20px;
+    padding-right: 50px;
+    background-image: linear-gradient(bottom, #c43b62 0%, #d06280 100%);
+    background-image: -o-linear-gradient(bottom, #c43b62 0%, #d06280 100%);
+    background-image: -moz-linear-gradient(bottom, #c43b62 0%, #d06280 100%);
+    background-image: -webkit-linear-gradient(bottom, #c43b62 0%, #d06280 100%);
+    background-image: -ms-linear-gradient(bottom, #c43b62 0%, #d06280 100%);
+    background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0, #c43b62),
+            color-stop(1, #d06280)
+    );
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0px 1px 0px #d06280, 0px 5px 0px 0px #982e4b, 0px 10px 5px #999;
+    -moz-box-shadow: inset 0px 1px 0px #d06280, 0px 5px 0px 0px #982e4b, 0px 10px 5px #999;
+    -o-box-shadow: inset 0px 1px 0px #d06280, 0px 5px 0px 0px #982e4b, 0px 10px 5px #999;
+    box-shadow: inset 0px 1px 0px #d06280, 0px 5px 0px 0px #982e4b, 0px 10px 5px #999;
+}
+
+.a_demo_four:active {
+    top:3px;
+    background-image: linear-gradient(bottom,#d06280 0%, #c43b62 100%);
+    background-image: -o-linear-gradient(bottom,#d06280 0%, #c43b62 100%);
+    background-image: -moz-linear-gradient(bottom, #d06280 0%,#c43b62 100%);
+    background-image: -webkit-linear-gradient(bottom, #d06280 0%, #c43b62 100%);
+    background-image: -ms-linear-gradient(bottom, #d06280 0%, #c43b62 100%);
+    background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0,#d06280),
+            color-stop(1, #c43b62)
+    );
+    -webkit-box-shadow: inset 0px 1px 0px #d06280, 0px 2px 0px 0px #982e4b, 0px 5px 3px #999;
+    -moz-box-shadow: inset 0px 1px 0px #d06280, 0px 2px 0px 0px #982e4b, 0px 5px 3px #999;
+    -o-box-shadow: inset 0px 1px 0px #d06280, 0px 2px 0px 0px #982e4b, 0px 5px 3px #999;
+    box-shadow: inset 0px 1px 0px #d06280, 0px 2px 0px 0px #982e4b, 0px 5px 3px #999;
+}
+
+.a_demo_four::before {
+    background-color:#c43b62;
+    background-image:url("http://ozec80sj2.bkt.clouddn.com/right_arrow.png");
+    background-repeat:no-repeat;
+    background-position:center center;
+    content:"";
+    width:20px;
+    height:20px;
+    position:absolute;
+    right:15px;
+    top:50%;
+    margin-top:-9px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-box-shadow: inset 0px 1px 0px #3b121d, 0px 1px 0px #d06280;
+    -moz-box-shadow: inset 0px 1px 0px #3b121d, 0px 1px 0px#d06280;
+    -o-box-shadow: inset 0px 1px 0px #3b121d, 0px 1px 0px #d06280;
+    box-shadow: inset 0px 1px 0px #3b121d, 0px 1px 0px#d06280;
+}
+
+.a_demo_four:active::before {
+    top:50%;
+    margin-top:-12px;
+    -webkit-box-shadow: inset 0px 1px 0px #d06280, 0px 3px 0px #4e1827, 0px 6px 3px #621e30 ;
+    -moz-box-shadow: inset 0px 1px 0px #d06280, 0px 3px 0px #4e1827, 0px 6px 3px #621e30;
+    -o-box-shadow: inset 0px 1px 0px #d06280, 0px 3px 0px #4e1827, 0px 6px 3px #621e30;
+    box-shadow: inset 0px 1px 0px #d06280, 0px 3px 0px #4e1827, 0px 6px 3px #621e30;
+}
+
+.saveimg{
+    height:20px;
+    width:20px;
+}
+
+#zhuxiao{
+    display:flex;
+    flex-direction: row;
+    justify-content:flex-end;
+}
+
+@-webkit-keyframes greenPulse {
+    from { background-color: #5f9ea0; -webkit-box-shadow: 0 0 9px #333; }
+    50% { background-color:#add8e6; -webkit-box-shadow: 0 0 18px #add8e6; }
+    to { background-color: #5f9ea0; -webkit-box-shadow: 0 0 9px #333; }
+}
+.button {
+    -webkit-animation-name: greenPulse;
+    -webkit-animation-duration: 4s;
+    -webkit-animation-iteration-count: infinite;
+    border: solid 1px;
+    border-radius: 10px;
+}

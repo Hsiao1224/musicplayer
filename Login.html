@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    @-webkit-keyframes greenPulse {
+        from { background-color: #5f9ea0; -webkit-box-shadow: 0 0 9px #333; }
+        50% { background-color:#add8e6; -webkit-box-shadow: 0 0 18px #add8e6; }
+        to { background-color: #5f9ea0; -webkit-box-shadow: 0 0 9px #333; }
+    }
+    .button {
+        -webkit-animation-name: greenPulse;
+        -webkit-animation-duration: 4s;
+        -webkit-animation-iteration-count: infinite;
+        border: solid 1px;
+        border-radius: 10px;
+    }
+    .tableback{
+        background:url("http://ozec80sj2.bkt.clouddn.com/tableb1.png");
+        margin:auto;
+        margin-top:18%;
+        align:center;
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+    <script src="bmob-min.js"></script>
+    <script src="bmobSocketIo.js"></script>
+    <script src="bmobSocketIo-min.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="bmob.js"></script>
+    <link rel="shortcut icon" href="http://ozec80sj2.bkt.clouddn.com/icon.png" type="image/x-icon"/>
+</head>
+<body style="background-image:url(http://ozec80sj2.bkt.clouddn.com/backgroundlogo.jpg);background-size:cover;background-repeat:no-repeat">
+<div>
+    <form id="form1" method="get">
+        <table class="tableback" width="300" height="150">
+            <tr align="center">
+                <td>用户名</td>
+                <td><input type="text" id="name" placeholder="请输入账号用户名" size="20" maxlength="20" value=""></td>
+            </tr>
+            <tr align="center">
+                <td>密码</td>
+                <td><input type="password" id="password" placeholder="请输入账号密码" size="20" maxlength="20" value=""></td>
+            </tr>
+            <tr align="center">
+                <td>电子邮箱</td>
+                <td><input type="text" id="email" placeholder="请输入电子邮箱" value=""></td>
+            </tr>
+        </table>
+        <table background="http://ozec80sj2.bkt.clouddn.com/tableb1.png"  align="center" width="300" height="50">
+            <tr align="center" >
+                <td><button type="button"  name="点击注册账号" value="" class="button" onclick="firstlogin()">点击注册账号</button></td>
+                <td><a href="index.html"><input type="button" value="返回登陆页面" class="button" ></input></a></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<script type="text/javascript">
+    Bmob.initialize("e71de293b16addd1ded15236810102b9", "f722c79b7725c8a68645b8ce602a4e8f");
+    function firstlogin() {
+        var newuser = document.getElementById("name").value;
+        var newpassword = document.getElementById("password").value;
+        var newemail = document.getElementById("email").value;
+        var GameScore = Bmob.Object.extend("User_Login");
+        var query = new Bmob.Query(GameScore);
+// 查询所有数据
+        query.find({
+            success: function(results) {
+                // 循环处理查询到的数据
+                for (var i = 0; i < results.length; i++) {
+                    var object = results[i];
+                    var olduser = object.get("User_ID");
+                    if(newuser == olduser){
+                        alert("该用户名已被注册！");
+                        return false;
+                    }
+                    else{}
+                }
+            },
+            error: function(error) {
+                alert("查询失败: " + error.code + " " + error.message);
+            }
+        });
+        if(newuser == ""){
+            alert("用户名不能为空！");
+            return false;
+        }
+        else if(newpassword == "") {
+            alert("密码不能为空！");
+            return false;
+        }
+        else if(newemail == "") {
+            alert("电子邮箱不能为空！");
+            return false;
+        }
+        else {
+            var GameScore = Bmob.Object.extend("User_Login");
+            var gameScore = new GameScore();
+            gameScore.set("User_ID",newuser);
+            gameScore.set("User_Password", newpassword);
+            gameScore.set("User_Email", newemail);
+//添加数据，第一个入口参数是null
+            gameScore.save(null, {
+                success: function(object) {
+                    // 添加成功，返回成功之后的objectId（注意：返回的属性名字是id，不是objectId），你还可以在Bmob的Web管理后台看到对应的数据
+                    alert('注册账号成功！');
+                },
+                error: function(model, error) {
+                    // 添加失败
+                    alert('注册账号失败！');
+                }
+            });
+        }
+    }
+ </script>
+</body>
+</html>

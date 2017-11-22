@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>YOUR音乐播放器</title>
+    <script src="bmob-min.js"></script>
+    <script src="bmobSocketIo.js"></script>
+    <script src="bmobSocketIo-min.js"></script>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="bmob.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="musiclist.css"/>
+    <link rel="shortcut icon" href="http://ozec80sj2.bkt.clouddn.com/icon.png" type="image/x-icon"/>
+</head>
+<body style="background-image:url(http://ozec80sj2.bkt.clouddn.com/background.jpg);background-size:cover;background-repeat:no-repeat">
+<div id="zhuxiao">
+    <a href="index.html"><input type="button" value="注销" class="button"></input></a>
+</div>
+<div class="myplayer">
+    <div id="t_wrapper">
+        <div class="container">
+            <header>
+                <nav>
+                    <a href="#" onclick="changeDiv1()" class="a_demo_four">全部列表</a>
+                    <a href="#" onclick="changeDiv2()" class="a_demo_four">收藏列表</a>
+                </nav>
+            </header>
+        </div>
+    </div>
+    <div id="playlist" class="playlist">
+    </div>
+    <div id="savelist" class="savelist">
+    </div>
+</div>
+<script type="text/javascript">
+    Bmob.initialize("e71de293b16addd1ded15236810102b9", "f722c79b7725c8a68645b8ce602a4e8f");
+    // 切换DIV（全部列表收藏列表的切换实现）
+
+    //调取用户ID
+   var loginer = localStorage.getItem('username');
+
+
+
+    function changeDiv1() {
+//        var div = document.getElementById('playlist');
+        document.getElementById("playlist").style.display = "block";
+        document.getElementById("savelist").style.display = "none";
+    }
+    function changeDiv2() {
+//        var div = document.getElementById('savelist');
+        document.getElementById("playlist").style.display = "none";
+        document.getElementById("savelist").style.display = "block";
+    }
+
+    //从数据库中调取所有音乐资源
+    var str = '<ul>';
+    var Score = Bmob.Object.extend("Music");
+    var query = new Bmob.Query(Score);
+    query.find({
+        success: function (all_results) {
+            //渲染前先从收藏数据表里通过个人的ID获取所有收藏的歌曲
+            var GameScore = Bmob.Object.extend("Save");
+            var query1 = new Bmob.Query(GameScore);
+            // 查询所有数据
+            query1.find({
+                success: function (coll_results) {
+                    // 循环处理查询到的数据
+                    var coll_arr = [];
+                    for (var i = 0; i < coll_results.length; i++) {
+                        var coll_object = coll_results[i];
+                        var saver = coll_object.get('saver');
+                        var songname = coll_object.get('songname');
+                        if (loginer == saver) {
+                            coll_arr.push(songname);
+                        }
+                        else {
+                        }
+                    }
+                    //从数据库中调取用户收藏的音乐资源
+                    for (var j = 0; j < all_results.length; j++) {
+                        var all_object = all_results[j];
+                        var musicname = all_object.get('musicname');
+                        if($.inArray(musicname,coll_arr) != -1){
+                            var author = all_object.get('author');
+                            var from = all_object.get('musicfrom');
+                            var img_id = all_object.id;
+                            document.getElementById("playlist").innerHTML += "<li>" + "<a href='" + from + "'target='_blank'>" + musicname + '    -    ' + author + "</a>" + "<image value ='" + musicname + "' link ='" + from + "' singer ='" + author + "' state = 'true' src='3.png' id='" + img_id + "' class='saveimg'onclick='save(this)'></image> " + "</li>";
+                        }
+                        else{
+                            var author = all_object.get('author');
+                            var from = all_object.get('musicfrom');
+                            var img_id = all_object.id;
+                            document.getElementById("playlist").innerHTML += "<li>" + "<a href='" + from + "'target='_blank'>" + musicname + '    -    ' + author + "</a>" + "<image value ='" + musicname + "' link ='" + from + "' singer ='" + author + "' state = 'false' src='1.png' id='" + img_id + "' class='saveimg'onclick='save(this)'></image> " + "</li>";
+                        }
+                    }
+                    str += '<ul>';
+                },
+                error: function (error) {
+                    alert("查询失败: " + error.code + " " + error.message);
+                }
+            });
+        },
+        error: function (error) {
+            alert("查询失败: " + error.code + " " + error.message);
+        }
+    });
+
+//收藏按钮
+    function save(obj) {
+        var state=obj.getAttribute('state');
+        var coll_id=obj.getAttribute('id');
+        var gequ=obj.getAttribute('value');
+        var yinyuan=obj.getAttribute('link');
+        var geshou=obj.getAttribute('singer');
+        if(state == 'true'){
+            //点击取消收藏功能
+            //查询这条已收藏的数据
+            var Delete = Bmob.Object.extend("Save");
+            var queryD = new Bmob.Query(Delete);
+            queryD.equalTo("saver", loginer);
+            queryD.equalTo("songfrom", yinyuan);
+// 查询所有数据
+            queryD.find({
+                success: function(findresults) {
+                var iddd = findresults[0].id;
+                    //删除收藏表中的数据
+                    queryD.get(iddd, {
+                        success: function(object) {
+                            object.destroy({
+                                success: function(deleteObject) {
+                                    alert("取消收藏成功");
+                                   obj.setAttribute('state','false');
+                                   obj.setAttribute('src',"1.png");
+                                },
+                                error: function(GameScoretest, error) {
+                                    alert("取消收藏失败");
+                                }
+                            });
+                        },
+                        error: function(object, error) {
+                        }
+                    });
+                },
+                error: function(error) {
+                }
+            });
+        }
+        else{
+//点击添加收藏功能
+            var SaveData = Bmob.Object.extend("Save");
+            var savedata = new SaveData();
+            savedata.set("saver",loginer);
+            savedata.set("songname", gequ);
+            savedata.set("songauthor", geshou);
+            savedata.set("songfrom", yinyuan);
+            savedata.save(null, {
+                success: function(object) {
+                    alert("收藏成功");
+                   obj.setAttribute('state','true');
+                    obj.setAttribute('src',"3.png");
+                },
+                error: function(model, error) {
+                    alert("收藏失败");
+                }
+            });
+        }
+    }
+
+    //收藏列表渲染
+    var str0 = '<ul>';
+    var Score0 = Bmob.Object.extend("Save");
+    var query0 = new Bmob.Query(Score0);
+    query0.find({
+        success: function(results0) {
+            for (var i = 0; i < results0.length; i++) {
+                var object0 = results0[i];
+                var savesongname = object0.get('songname');
+                var savesongauthor = object0.get('songauthor');
+                var savesongfrom = object0.get('songfrom');
+                var savesaver = object0.get('saver');
+                var img_id0 =  object0.id;
+                if(savesaver == loginer ){
+                document.getElementById("savelist").innerHTML += "<li>" + "<a href='" + savesongfrom + "'target='_blank'>" + savesongname + '    -    ' + savesongauthor + "</a>" + "<image value ='" + savesongname + "' link ='" + savesongfrom + "' singer ='" + savesongauthor + "' state = 'true' src='3.png' id='" + img_id0 + "' class='saveimg'onclick='unsave(this)'></image> "+"</li>";
+                                          }str0 +='<ul>';
+            }
+        },
+        error: function(error) {
+            alert("查询失败: " + error.code + " " + error.message);
+        }
+    });
+
+    function unsave(obj) {
+        var state=obj.getAttribute('state');
+        var coll_id=obj.getAttribute('id');
+        var gequ=obj.getAttribute('value');
+        var yinyuan=obj.getAttribute('link');
+        var geshou=obj.getAttribute('singer');
+        if(state == 'true'){
+            //点击取消收藏功能
+            //查询这条已收藏的数据
+            var Delete = Bmob.Object.extend("Save");
+            var queryD = new Bmob.Query(Delete);
+            queryD.equalTo("saver", loginer);
+            queryD.equalTo("songfrom", yinyuan);
+// 查询所有数据
+            queryD.find({
+                success: function(findresults) {
+                    var iddd = findresults[0].id;
+                    //删除收藏表中的数据
+                    queryD.get(iddd, {
+                        success: function(object) {
+                            object.destroy({
+                                success: function(deleteObject) {
+                                    alert("取消收藏成功");
+                                    obj.setAttribute('state','false');
+                                    obj.setAttribute('src',"1.png");
+                                },
+                                error: function(GameScoretest, error) {
+                                    alert("取消收藏失败");
+                                }
+                            });
+                        },
+                        error: function(object, error) {
+                        }
+                    });
+                },
+                error: function(error) {
+                }
+            });
+        }
+        else{
+//点击添加收藏功能
+            var SaveData = Bmob.Object.extend("Save");
+            var savedata = new SaveData();
+            savedata.set("saver",loginer);
+            savedata.set("songname", gequ);
+            savedata.set("songauthor", geshou);
+            savedata.set("songfrom", yinyuan);
+            savedata.save(null, {
+                success: function(object) {
+                    alert("收藏成功");
+                    obj.setAttribute('state','true');
+                    obj.setAttribute('src',"3.png");
+
+                },
+                error: function(model, error) {
+                    alert("收藏失败");
+                }
+            });
+        }
+    }
+
+
+</script>
+</body>
+</html>
